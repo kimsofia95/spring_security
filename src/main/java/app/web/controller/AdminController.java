@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,48 +34,39 @@ public class AdminController {
     }
 
     @GetMapping("/admin/delete/{username}")
-    public ModelAndView deleteUser(Model model, @PathVariable String username) {
-        ModelAndView modelAndView = new ModelAndView();
+    public String deleteUser(Model model, @PathVariable String username) {
         User user = (User) userService.loadUserByUsername(username);
         adminService.deleteUser(user);
-        modelAndView.setViewName("redirect:/admin");
-        return modelAndView;
+        return "redirect:/admin";
     }
 
     @GetMapping(value = "/admin/edit/{username}")
-    public ModelAndView editPage(@PathVariable("username") String username) {
+    public String editPage(ModelMap model, @PathVariable("username") String username) {
         User user = (User) userService.loadUserByUsername(username);
         ArrayList<Role> roles = (ArrayList<Role>) adminService.allRoles();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("editUser");
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("allRoles", roles);
-        return modelAndView;
+        model.addAttribute("user", user);
+        model.addAttribute("allRoles", roles);
+        return "editUser";
     }
 
     @PostMapping(value = "/admin/edit")
-    public ModelAndView editUser(@ModelAttribute("user") User user, @RequestParam(value = "roles", required = false) String[] roles) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/admin");
+    public String editUser(@ModelAttribute("user") User user, @RequestParam(value = "roles", required = false) int[] roles) {
         adminService.ChangeUser(user, roles);
-        return modelAndView;
+        return "redirect:/admin";
     }
 
     @PostMapping(value = "admin/add")
-    public ModelAndView addUser(@ModelAttribute("user") User user,@RequestParam(value = "roles", required = false) String[] roles) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/admin");
+    public String addUser(@ModelAttribute("user") User user,@RequestParam(value = "roles", required = false) int[] roles) {
         adminService.addUser(user, roles);
-        return modelAndView;
+        return "redirect:/admin";
     }
 
     @GetMapping(value = "admin/add")
-    public ModelAndView addUser() {
-        ModelAndView modelAndView = new ModelAndView();
+    public String addUser(ModelMap model) {
         ArrayList<Role> roles = (ArrayList<Role>) adminService.allRoles();
-        modelAndView.setViewName("editUser");
-        modelAndView.addObject("allRoles", roles);
-        return modelAndView;
+        model.addAttribute("allRoles", roles);
+        model.addAttribute("addUser", new User());
+        return "editUser";
     }
     @GetMapping("/admin/{username}")
     public String getUser(@PathVariable("username") String username, Model model) {

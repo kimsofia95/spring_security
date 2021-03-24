@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/login")
 public class UserController {
 	private final UserDetailsService userDetailsService;
 	private final AdminService adminService;
@@ -29,32 +29,10 @@ public class UserController {
 	}
 
 	@Transactional
-	@GetMapping(value = "hello")
-	public String printWelcome(ModelMap model) {
-		List<String> messages = new ArrayList<>();
-		messages.add("Hello!");
-		messages.add("I'm Spring MVC-SECURITY application");
-		messages.add("5.2.0 version by sep'19 ");
-		model.addAttribute("messages", messages);
-		return "hello";
-	}
-
-	@Transactional
-    @GetMapping(value = "login")
-    public ModelAndView loginPage(ModelMap modelMap) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("login");
-        return modelAndView;
-    }
-
-	@Transactional
 	@GetMapping(value = "user")
-	public ModelAndView UserPageId(ModelMap modelMap, @AuthenticationPrincipal User user) {
+	public String UserPageId(ModelMap modelMap, @AuthenticationPrincipal User user) {
 		modelMap.addAttribute("user", user);
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("user");
-		modelAndView.addObject(user);
-		return modelAndView;
+		return "userPage";
 	}
 
 }

@@ -33,10 +33,10 @@ public class AdminDaoImpl implements AdminDao{
     }
 
     @Override
-    public void addUser(User user, String[] roles) {
+    public void addUser(User user, int[] roles) {
         Set<Role> rolesSet = new HashSet<>();
-        for(String role: roles) {
-            Role getRole = (Role) entityManager.createQuery("select n from Role n where n.role='" + role + "'").getSingleResult();
+        for(int role: roles) {
+            Role getRole = (Role) entityManager.createQuery("select n from Role n where n.id ='" + role + "'").getSingleResult();
             rolesSet.add(getRole);
         }
         user.setRolesSecond(rolesSet);
@@ -44,10 +44,10 @@ public class AdminDaoImpl implements AdminDao{
     }
 
     @Override
-    public void ChangeUser(User user, String[] roles) {
+    public void ChangeUser(User user, int[] roles) {
         Set<Role> rolesSet = new HashSet<>();
-        for(String role: roles) {
-            Role getRole = (Role) entityManager.createQuery("select n from Role n where n.role='" + role + "'").getSingleResult();
+        for(int role: roles) {
+            Role getRole = (Role) entityManager.createQuery("select n from Role n where n.id ='" + role + "'").getSingleResult();
             rolesSet.add(getRole);
         }
         user.setRolesSecond(rolesSet);

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New person</title>
+</head>
+<body>
+<form th:if="${user != null}" th:method="POST" th:action="@{/admin/edit}" th:object="${user}">
+    <input type="hidden" name="id" th:field ="*{id}">
+    <label for="name">Name:</label>
+    <input type="text" th:field="*{name}" id="name">
+    <br/>
+    <label for="password">Password:</label>
+    <input type="text" th:field="*{password}" id="password">
+    <br/>
+    <ul>
+        <li th:each="role : ${allRoles}">
+            <input type="checkbox" name="roles"  th:value="${role.getId()}"
+                   th:text="${role.getRole()}" />
+        </li>
+    </ul>
+    <input type="submit" value="Update"/>
+</form>
+<form th:if="${user == null}" th:method="POST" th:action="@{/admin/add}" th:object="${addUser}">
+
+    <label for="name1">Name:</label>
+    <input type="text" th:field="*{name}" id="name1">
+    <br/>
+    <label for="password1">Password:</label>
+    <input type="text" th:field="*{password}" id="password1">
+    <br/>
+    <ul>
+        <li th:each="role : ${allRoles}">
+            <input type="checkbox" name="roles" th:field="*{roles}" th:value="${role.getId()}"
+                   th:text="${role.getRole()}" />
+        </li>
+    </ul>
+    <input type="submit" value="Create"/>
+</form>
+<div>
+    <a href="/logout">Выйти из системы</a>
+</div>
+</body>

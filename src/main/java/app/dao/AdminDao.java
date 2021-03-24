@@ -9,7 +9,7 @@ public interface AdminDao {
     ArrayList<User> allUsers();
     ArrayList<Role> allRoles();
     void deleteUser(User user);
-    void addUser(User user, String[] roles);
-    void ChangeUser(User user, String[] roles);
+    void addUser(User user, int[] roles);
+    void ChangeUser(User user, int[] roles);
     void createDefaultRows();
 }
