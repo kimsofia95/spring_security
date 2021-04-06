@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/login")
 public class UserController {
 	private final UserDetailsService userDetailsService;
 	private final AdminService adminService;
